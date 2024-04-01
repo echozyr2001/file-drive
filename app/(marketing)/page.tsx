@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import Image from "next/image";
 
 const HomePage = () => {
@@ -10,7 +11,7 @@ const HomePage = () => {
       <div className="flex items-center justify-between p-4">
         <h1>Your files</h1>
         <div className="flex gap-4">
-          <Input placeholder="Search file name" />
+          <Input placeholder="🔍 Search file name" />
           <Button type="submit" onClick={() => alert("you click search")}>
             Search
           </Button>
