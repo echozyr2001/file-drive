@@ -2,10 +2,17 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { api } from "@/convex/_generated/api";
+import { useOrganization } from "@clerk/nextjs";
+import { useMutation } from "convex/react";
 import Image from "next/image";
 
 const HomePage = () => {
+  // TODO: fix orgainzation maybe not loaded
+  const { organization } = useOrganization();
+
+  const createFile = useMutation(api.files.createFiles);
+
   return (
     <div className="h-full flex flex-col">
       <div className="flex items-center justify-between p-4">
@@ -19,6 +26,18 @@ const HomePage = () => {
         <Button>Upload</Button>
       </div>
       <div className="w-full h-full flex flex-col items-center justify-center p-4 gap-4">
+        <Button
+          onClick={() => {
+            // TODO: fix orgainzation maybe not loaded
+            if (!organization) return;
+            createFile({
+              name: "hello world",
+              orgId: organization?.id,
+            });
+          }}
+        >
+          test
+        </Button>
         <Image src="/empty.svg" alt="Empty" width={300} height={300} />
         <div className="text-2xl">You have no files, go to upload now</div>
       </div>
