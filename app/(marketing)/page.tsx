@@ -39,7 +39,15 @@ const HomePage = () => {
         >
           test
         </Button>
-        <Image src="/empty.svg" alt="Empty" width={300} height={300} />
+        {/* only use priority for importamt image */}
+        <Image
+          src="/empty.svg"
+          alt="Empty"
+          width={0}
+          height={0}
+          priority
+          className="w-[500px] h-auto"
+        />
         <div className="text-2xl">You have no files, go to upload now</div>
       </div>
     </div>
