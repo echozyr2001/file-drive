@@ -3,7 +3,6 @@ import { v } from "convex/values";
 
 export default defineSchema({
   files: defineTable({ name: v.string(), orgId: v.string() }).index(
-    // TODO: how to define index
     "by_orgId",
     ["orgId"]
   ),
