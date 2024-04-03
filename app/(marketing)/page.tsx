@@ -1,6 +1,16 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { api } from "@/convex/_generated/api";
 import { useOrganization } from "@clerk/nextjs";
@@ -23,7 +33,29 @@ const HomePage = () => {
             Search
           </Button>
         </div>
-        <Button>Upload</Button>
+        <div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>Upload</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Upload your file</DialogTitle>
+                <DialogDescription>
+                  This is a test description
+                </DialogDescription>
+              </DialogHeader>
+              Add a form here
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button type="button" variant="secondary">
+                    Close
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
       <div className="w-full h-full flex flex-col items-center justify-center p-4 gap-4">
         <Button
