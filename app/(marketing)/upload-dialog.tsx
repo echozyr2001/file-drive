@@ -17,7 +17,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { api } from "@/convex/_generated/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "convex/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -43,10 +45,28 @@ export const UploadDialog = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    setIsDialogOpen(false);
+  const generateUploadUrl = useMutation(api.files.generateUploadUrl);
+  const createFile = useMutation(api.files.createFiles);
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const postUrl = await generateUploadUrl();
+    // TODO: fix fetch success but create file failed
+    // this lead to file uploaded but not saved record in db
+    const result = await fetch(postUrl, {
+      method: "POST",
+      headers: { "Content-Type": values.file[0].type },
+      body: values.file[0],
+    });
+    const { storageId } = await result.json();
+
+    await createFile({
+      name: values.fileName,
+      fileId: storageId,
+      orgId: "123",
+    });
+
     form.reset();
+    setIsDialogOpen(false);
   };
 
   return (
