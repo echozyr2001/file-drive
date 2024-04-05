@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { api } from "@/convex/_generated/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "convex/react";
+import { Loader } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -36,6 +37,7 @@ const formSchema = z.object({
 
 export const UploadDialog = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isBlurred, setIsBlurred] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,6 +51,7 @@ export const UploadDialog = () => {
   const createFile = useMutation(api.files.createFiles);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setIsBlurred(true);
     const postUrl = await generateUploadUrl();
     // TODO: fix fetch success but create file failed
     // this lead to file uploaded but not saved record in db
@@ -67,15 +70,27 @@ export const UploadDialog = () => {
 
     form.reset();
     setIsDialogOpen(false);
+    setIsBlurred(false);
   };
 
   return (
     <div>
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Dialog
+        open={isDialogOpen}
+        onOpenChange={(isOpen) => {
+          setIsDialogOpen(isOpen);
+          form.reset();
+        }}
+      >
         <DialogTrigger asChild>
           <Button>Upload</Button>
         </DialogTrigger>
         <DialogContent>
+          {isBlurred && (
+            <div className="flex absolute inset-0 backdrop-blur-md items-center justify-center rounded-lg">
+              <Loader className="h-10 w-10 animate-spin" />
+            </div>
+          )}
           <DialogHeader>
             <DialogTitle>Upload your file</DialogTitle>
             <DialogDescription>This is a test description</DialogDescription>
@@ -108,7 +123,7 @@ export const UploadDialog = () => {
               <div className="flex justify-between">
                 <Button type="submit">Submit</Button>
                 <DialogClose asChild>
-                  <Button type="submit" variant="secondary">
+                  <Button type="button" variant="secondary">
                     Close
                   </Button>
                 </DialogClose>
