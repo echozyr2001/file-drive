@@ -10,17 +10,19 @@ import {
 
 export const FileCard = () => {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p>Card Content</p>
-      </CardContent>
-      <CardFooter>
-        <Button>Download</Button>
-      </CardFooter>
-    </Card>
+    <div className="shadow-lg hover:shadow-none rounded-lg">
+      <Card>
+        <CardHeader>
+          <CardTitle>Card Title</CardTitle>
+          <CardDescription>Card Description</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p>Card Content</p>
+        </CardContent>
+        <CardFooter>
+          <Button>Download</Button>
+        </CardFooter>
+      </Card>
+    </div>
   );
 };
