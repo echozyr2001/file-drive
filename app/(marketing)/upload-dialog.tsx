@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/convex/_generated/api";
 import { useOrganization } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,6 +40,7 @@ const formSchema = z.object({
 export const UploadDialog = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isBlurred, setIsBlurred] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,11 +71,25 @@ export const UploadDialog = () => {
     if (!organization) {
       throw new Error("Organization is null");
     }
-    await createFile({
-      name: values.fileName,
-      fileId: storageId,
-      orgId: organization.id,
-    });
+
+    try {
+      await createFile({
+        name: values.fileName,
+        fileId: storageId,
+        orgId: organization.id,
+      });
+      toast({
+        variant: "default",
+        title: "File Uploaded",
+        description: "Now everyone can see your file",
+      });
+    } catch {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: "Your file is not uploaded, please try again later",
+      });
+    }
 
     form.reset();
     setIsDialogOpen(false);
