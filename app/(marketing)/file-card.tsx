@@ -10,7 +10,7 @@ import {
 
 export const FileCard = () => {
   return (
-    <div className="shadow-lg hover:shadow-none rounded-lg">
+    <div className="shadow-lg hover:shadow-none shadow-cyan-500/20 rounded-lg">
       <Card>
         <CardHeader>
           <CardTitle>Card Title</CardTitle>
