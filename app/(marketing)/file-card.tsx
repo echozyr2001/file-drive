@@ -8,12 +8,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export const FileCard = () => {
+type Props = {
+  name: string;
+};
+
+export const FileCard = ({ name }: Props) => {
   return (
     <div className="shadow-lg hover:shadow-none shadow-cyan-500/20 rounded-lg">
       <Card>
         <CardHeader>
-          <CardTitle>Card Title</CardTitle>
+          <CardTitle>{name}</CardTitle>
           <CardDescription>Card Description</CardDescription>
         </CardHeader>
         <CardContent>

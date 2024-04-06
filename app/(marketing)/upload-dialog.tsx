@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { api } from "@/convex/_generated/api";
+import { useOrganization } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "convex/react";
 import { Loader } from "lucide-react";
@@ -50,6 +51,9 @@ export const UploadDialog = () => {
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
   const createFile = useMutation(api.files.createFiles);
 
+  // TODO: fix this organization may be null
+  const { organization } = useOrganization();
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsBlurred(true);
     const postUrl = await generateUploadUrl();
@@ -62,10 +66,13 @@ export const UploadDialog = () => {
     });
     const { storageId } = await result.json();
 
+    if (!organization) {
+      throw new Error("Organization is null");
+    }
     await createFile({
       name: values.fileName,
       fileId: storageId,
-      orgId: "123",
+      orgId: organization.id,
     });
 
     form.reset();
