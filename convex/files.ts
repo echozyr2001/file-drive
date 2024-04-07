@@ -51,3 +51,24 @@ export const getFiles = query({
       .collect();
   },
 });
+
+export const deleteFile = mutation({
+  args: {
+    fileId: v.id("files"),
+  },
+  async handler(ctx, args) {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError("You must be logged in to delete a file");
+    }
+
+    const file = await ctx.db.get(args.fileId);
+    if (!file) {
+      throw new ConvexError("File not found");
+    }
+
+    await ctx.db.delete(args.fileId);
+    await ctx.storage.delete(file.fileId);
+  },
+});

@@ -31,7 +31,7 @@ const HomePage = () => {
       </div>
       <div className=" grid grid-cols-4 gap-4 px-8">
         {files?.map((file) => (
-          <FileCard key={file.fileId} name={file.name} />
+          <FileCard key={file._id} file={file} />
         ))}
       </div>
       <div className="w-full h-full flex flex-col items-center justify-center p-4 gap-4">
