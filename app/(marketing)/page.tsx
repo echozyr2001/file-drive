@@ -43,6 +43,8 @@ const HomePage = () => {
               <Image
                 src="/empty.svg"
                 alt="Empty"
+                width={500}
+                height={500}
                 priority
                 className="w-[500px] h-auto"
               />

@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/convex/_generated/api";
+import { Doc } from "@/convex/_generated/dataModel";
 import { useOrganization } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "convex/react";
@@ -36,6 +37,11 @@ const formSchema = z.object({
         })
       : z.any(),
 });
+
+const types = {
+  "image/png": "image",
+  "application/pdf": "pdf",
+} as Record<string, Doc<"files">["type"]>;
 
 export const UploadDialog = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -77,6 +83,7 @@ export const UploadDialog = () => {
         name: values.fileName,
         fileId: storageId,
         orgId: organization.id,
+        type: types[values.file[0].type],
       });
       toast({
         variant: "default",
