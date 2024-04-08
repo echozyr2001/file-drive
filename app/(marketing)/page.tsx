@@ -29,22 +29,27 @@ const HomePage = () => {
         </div>
         <UploadDialog />
       </div>
-      <div className=" grid grid-cols-4 gap-4 px-8">
-        {files?.map((file) => (
-          <FileCard key={file._id} file={file} />
-        ))}
-      </div>
-      <div className="w-full h-full flex flex-col items-center justify-center p-4 gap-4">
+      <div className="h-full">
         {/* only use priority for importamt image */}
-        <Image
-          src="/empty.svg"
-          alt="Empty"
-          width={0}
-          height={0}
-          priority
-          className="w-[500px] h-auto"
-        />
-        <div className="text-2xl">You have no files, go to upload now</div>
+        {!files || files.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full gap-8">
+            <Image
+              src="/empty.svg"
+              alt="Empty"
+              width={0}
+              height={0}
+              priority
+              className="w-[500px] h-auto"
+            />
+            <div className="text-2xl">You have no files, go to upload now</div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-4 gap-4 px-8">
+            {files?.map((file) => (
+              <FileCard key={file._id} file={file} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
